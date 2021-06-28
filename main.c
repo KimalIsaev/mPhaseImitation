@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "avl_tree.h"
 #include "frm.h"
-#include "read_float_pair_from_file.h"
+#include "read_double_pair_from_file.h"
 //indexes for recognition in avl tree
 const char I_FLOW = 0;
 const char I_ORBIT = 1;
@@ -12,26 +12,26 @@ const char I_DEVICE = 2;
 const char N_VARIABLES = 8;
 
 unsigned int N_DEVICE = 2;
-float X_FLOW = 0.8;
-float X_ORBIT = 0.2;
-float Q_Q = 0.25;
-float X_PHASE_1 = 0.6;
-float X_PHASE_2 = 1.5;
-float Q_R0 = 0.7;
-float Q_R1 = 0.2;
-float Q_R2;
+double X_FLOW = 0.8;
+double X_ORBIT = 0.2;
+double Q_Q = 0.25;
+double X_PHASE_1 = 0.6;
+double X_PHASE_2 = 1.5;
+double Q_R0 = 0.7;
+double Q_R1 = 0.2;
+double Q_R2;
 char* RNG_FILE = "big_test.txt";
 
 unsigned int m_step = 0;
 int number_of_request_in_devices = 0;
 int number_of_request_in_orbit = 0;
 unsigned int k_step;
-float* orbit_times;
-struct float_pair* float_pairs; //definition in read_float_pair_from_file
+double* orbit_times;
+struct double_pair* double_pairs; //definition in read_double_pair_from_file
 
 struct indexed_time{
 	unsigned char index;
-	float time;
+	double time;
 	struct avl_tree_node node;
 };
 #define INDEXED_TIME(__node) avl_tree_entry(__node, struct indexed_time, node) 
@@ -44,7 +44,7 @@ int cmp_func(const struct avl_tree_node *node1,
 	return (TIME_VALUE(node1) > TIME_VALUE(node2)) ? 1: -1;
 }
 
-void wait_new(char index, float time){
+void wait_new(char index, double time){
 	struct indexed_time* to_insert = 
 		(struct indexed_time *)malloc(sizeof(struct indexed_time));
 	to_insert->index = index;
@@ -53,37 +53,37 @@ void wait_new(char index, float time){
 	assert(NULL == avl_tree_insert(&tree, &to_insert->node, cmp_func));
 }
 
-void wait_new_from_flow(float a){
+void wait_new_from_flow(double a){
 	wait_new(I_FLOW, exp_dist(a, X_FLOW));
 }
 
-void wait_new_from_orbit(float a){
+void wait_new_from_orbit(double a){
 	wait_new(I_ORBIT, exp_dist(a, X_ORBIT));
 }
 
-void wait_new_from_device(float a, float q){
+void wait_new_from_device(double a, double q){
 	wait_new(I_DEVICE, hyperexp_dist(a, q, n, V_Q, V_X));
 }
 
 void wait_sampled_flow(){
-	wait_new_from_flow(float_pairs[k_step].first);
+	wait_new_from_flow(double_pairs[k_step].first);
 }
 
 void wait_sampled_orbit(){
-	wait_new_from_orbit(float_pairs[k_step].first);
+	wait_new_from_orbit(double_pairs[k_step].first);
 }
 
 void wait_sampled_device(){
-	wait_new_from_device(float_pairs[k_step].first,
-			float_pairs[k_step].second);
+	wait_new_from_device(double_pairs[k_step].first,
+			double_pairs[k_step].second);
 }
 
 void add_first_from_flow(){
-	wait_new_from_flow(float_pairs[0].first); 
+	wait_new_from_flow(double_pairs[0].first); 
 }
 
 void set_up(unsigned int n){
-	orbit_times = malloc(sizeof(float)*n);
+	orbit_times = malloc(sizeof(double)*n);
 	for (int i=0; i < n; orbit_times[i++] = 0);
 	add_first_from_flow();
 }
@@ -105,10 +105,10 @@ void free_avl_tree(struct avl_tree_node** tree){
 void clean_up(){
 	free_avl_tree(&tree);
 	free(orbit_times);
-	free(float_pairs);
+	free(double_pairs);
 }
 
-void decrease_time_from(struct avl_tree_node* current, float min){
+void decrease_time_from(struct avl_tree_node* current, double min){
 	struct indexed_time* to_decrease_time;
 	while(current){
 		to_decrease_time = INDEXED_TIME(current);
@@ -117,7 +117,7 @@ void decrease_time_from(struct avl_tree_node* current, float min){
 	}
 }
 
-void min_change(char* index_of_deleted, float* min){
+void min_change(char* index_of_deleted, double* min){
 	struct avl_tree_node* current = 
 		avl_tree_first_in_order(tree);
  	struct indexed_time* to_delete = INDEXED_TIME(current); 
@@ -147,14 +147,14 @@ void new_request_to_execute(){
 	}
 }
 void new_request_executed(){
-	float uni = float_pairs[k_step].first; 
+	double uni = double_pairs[k_step].first; 
 	if (uni < Q_R2) new_request_in_orbit();
 	if (uni > (1 - Q_R1)) new_request_in_devices();
 }
 
-float step(){
+double step(){
 	char index_of_worked_stream;
-	float time_of_step;
+	double time_of_step;
 	min_change(&index_of_worked_stream, &time_of_step);
 	switch (index_of_worked_stream) {
 		case I_FLOW:
@@ -229,7 +229,7 @@ void printf_variables(){
 
 int main(int argc, char *argv[]){
 	set_variables(argc, argv);
-	unsigned int n_step = file_to_array(RNG_FILE, &float_pairs);
+	unsigned int n_step = file_to_array(RNG_FILE, &double_pairs);
 	set_up(n_step);
 	int old_number_requst_in_orbit;
 	//for(k_step = 1; k_step < M_STEP; k_step++) step();
