@@ -1,8 +1,8 @@
-#include "read_rng_file.h"
+#include "read_float_pair_from_file.h"
 
 int main(){
-	struct five_float* ffs;
-	printf("no N \n");
+	struct float_pair* ffs;
+	printf("no defined N \n");
 	unsigned int N = file_to_array("big_test.txt", &ffs);
 	printf("N is %d\n", N);
 	if (!N) {
@@ -10,7 +10,6 @@ int main(){
 		return 0;
 	}
 	for(long long i = 0; i < N; i++)
-		printf("%f %f %f %f %f\n", 
-				ffs[i].flow, ffs[i].orbit, ffs[i].phase, ffs[i].q, ffs[i].r);
+		printf("%f %f\n", ffs[i].first, ffs[i].second);
 	return 0;
 }

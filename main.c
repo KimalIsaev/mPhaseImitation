@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "avl_tree.h"
 #include "frm.h"
-#include "read_rng_file.h"
+#include "read_float_pair_from_file.h"
 //indexes for recognition in avl tree
 const char I_FLOW = 0;
 const char I_ORBIT = 1;
@@ -27,7 +27,7 @@ int number_of_request_in_devices = 0;
 int number_of_request_in_orbit = 0;
 unsigned int k_step;
 float* orbit_times;
-struct five_float* five_floats; //definition in read_rng_file
+struct float_pair* float_pairs; //definition in read_float_pair_from_file
 
 struct indexed_time{
 	unsigned char index;
@@ -66,20 +66,20 @@ void wait_new_from_device(float a, float q){
 }
 
 void wait_sampled_flow(){
-	wait_new_from_flow(five_floats[k_step].flow);
+	wait_new_from_flow(float_pairs[k_step].first);
 }
 
 void wait_sampled_orbit(){
-	wait_new_from_orbit(five_floats[k_step].orbit);
+	wait_new_from_orbit(float_pairs[k_step].first);
 }
 
 void wait_sampled_device(){
-	wait_new_from_device(five_floats[k_step].phase,
-			five_floats[k_step].q);
+	wait_new_from_device(float_pairs[k_step].first,
+			float_pairs[k_step].second);
 }
 
 void add_first_from_flow(){
-	wait_new_from_flow(five_floats[0].flow); 
+	wait_new_from_flow(float_pairs[0].first); 
 }
 
 void set_up(unsigned int n){
@@ -105,7 +105,7 @@ void free_avl_tree(struct avl_tree_node** tree){
 void clean_up(){
 	free_avl_tree(&tree);
 	free(orbit_times);
-	free(five_floats);
+	free(float_pairs);
 }
 
 void decrease_time_from(struct avl_tree_node* current, float min){
@@ -147,7 +147,7 @@ void new_request_to_execute(){
 	}
 }
 void new_request_executed(){
-	float uni = five_floats[k_step].r; 
+	float uni = float_pairs[k_step].first; 
 	if (uni < Q_R2) new_request_in_orbit();
 	if (uni > (1 - Q_R1)) new_request_in_devices();
 }
@@ -229,7 +229,7 @@ void printf_variables(){
 
 int main(int argc, char *argv[]){
 	set_variables(argc, argv);
-	unsigned int n_step = file_to_array(RNG_FILE, &five_floats);
+	unsigned int n_step = file_to_array(RNG_FILE, &float_pairs);
 	set_up(n_step);
 	int old_number_requst_in_orbit;
 	//for(k_step = 1; k_step < M_STEP; k_step++) step();

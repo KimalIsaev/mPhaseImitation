@@ -1,10 +1,10 @@
-#include "read_rng_file.h"
+#include "read_float_pair_from_file.h"
 
 #define NUM_128BIT(high,low) ((((__uint128_t)high) << 64) + low)
 
-static struct five_float new_five_float(__uint128_t r)
+static struct float_pair new_float_pair(__uint128_t r)
 {
-	struct five_float ff;
+	struct float_pair ff;
     const unsigned int FOR_FLOAT = 0x3F800000;
     union {
         unsigned int u;
@@ -23,7 +23,7 @@ static struct five_float new_five_float(__uint128_t r)
 	return ff;
 }
 
-unsigned int file_to_array(char* filename, struct five_float** array){
+unsigned int file_to_array(char* filename, struct float_pair** array){
 	FILE *fp;
 	char *line = NULL;
 	char *space = NULL;
@@ -38,12 +38,12 @@ unsigned int file_to_array(char* filename, struct five_float** array){
 
 	fp = fopen(filename, "r");
 	//count--;//last line is empty
-	*array = malloc(sizeof(struct five_float)*count);
+	*array = malloc(sizeof(struct float_pair)*count);
 	for (long long i = 0; i < count; i++){
 		read = getline(&line, &len, fp);
 		high = strtoull(line, &space, 16);
 		low = strtoull(++space, NULL,  16);
-		(*array)[i] = new_five_float(NUM_128BIT(high, low));
+		(*array)[i] = new_float_pair(NUM_128BIT(high, low));
 	}
 
 	free(line);
