@@ -1,4 +1,4 @@
-#include "frm.h"
+#include "distribution_functions.h"
 
 double exp_dist(double a, double l){
 	return -log(1-a)/l; 

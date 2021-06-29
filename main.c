@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "avl_tree.h"
-#include "frm.h"
+#include "distribution_functions.h"
 #include "read_double_pair_from_file.h"
 //indexes for recognition in avl tree
 const char I_FLOW = 0;
