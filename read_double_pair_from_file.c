@@ -52,12 +52,12 @@ unsigned int file_to_array(char* filename, struct double_pair** array){
 	fclose(fp);
 	return number_of_double_pairs;
 }
-
+/*
 int main(){
 	char filename[] = "test.txt";
 	struct double_pair* double_pairs;
 	file_to_array(filename, &double_pairs);
 	return 0;
 }
-
+*/
 
