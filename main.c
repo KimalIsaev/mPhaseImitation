@@ -9,18 +9,19 @@
 const char I_FLOW = 0;
 const char I_ORBIT = 1;
 const char I_DEVICE = 2;
-const char N_VARIABLES = 8;
+const char N_NON_EXECUTION_VARIABLES = 7;
 
+int N_PHASE;
 unsigned int N_DEVICE = 2;
 double X_FLOW = 0.8;
 double X_ORBIT = 0.2;
-double Q_Q = 0.25;
-double X_PHASE_1 = 0.6;
-double X_PHASE_2 = 1.5;
 double Q_R0 = 0.7;
 double Q_R1 = 0.2;
 double Q_R2;
 char* RNG_FILE = "big_test.txt";
+
+double* Q_EXECUTION = NULL;
+double* X_EXECUTION = NULL;
 
 unsigned int m_step = 0;
 int number_of_request_in_devices = 0;
@@ -62,7 +63,8 @@ void wait_new_from_orbit(double a){
 }
 
 void wait_new_from_device(double a, double q){
-	wait_new(I_DEVICE, hyperexp_dist(a, q, n, V_Q, V_X));
+	wait_new(I_DEVICE, hyperexp_dist(a, q, N_PHASE, 
+		Q_EXECUTION, X_EXECUTION));
 }
 
 void wait_sampled_flow(){
@@ -85,6 +87,7 @@ void add_first_from_flow(){
 void set_up(unsigned int n){
 	orbit_times = malloc(sizeof(double)*n);
 	for (int i=0; i < n; orbit_times[i++] = 0);
+	get_consecative_sums(Q_EXECUTION, N_PHASE, Q_EXECUTION); 
 	add_first_from_flow();
 }
 
@@ -106,6 +109,8 @@ void clean_up(){
 	free_avl_tree(&tree);
 	free(orbit_times);
 	free(double_pairs);
+	free(X_EXECUTION);
+	free(Q_EXECUTION);
 }
 
 void decrease_time_from(struct avl_tree_node* current, double min){
@@ -175,24 +180,27 @@ double step(){
 }
 
 void set_variables(int argc, char *argv[]){
-	if (argc == 1){
-		Q_R2 = 1 - Q_R0 - Q_R1;
-		return;
-	}
-	if (argc == (N_VARIABLES + 2)){
+	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
+	if ((n_execution_varianles > 0) && !(n_execution_variables % 2)){
 		N_DEVICE = strtoul(argv[1], NULL, 10); 
 		X_FLOW = strtod(argv[2], NULL); 
 		X_ORBIT = strtod(argv[3], NULL); 
-		Q_Q = strtod(argv[4], NULL); 
-		X_PHASE_1 = strtod(argv[5], NULL); 
-		X_PHASE_2 = strtod(argv[6], NULL); 
-		Q_R0 = strtod(argv[7], NULL); 
-		Q_R1 = strtod(argv[8], NULL); 
+		Q_R0 = strtod(argv[4], NULL); 
+		Q_R1 = strtod(argv[5], NULL); 
 		Q_R2 = 1 - Q_R0 - Q_R1;
-		RNG_FILE = argv[9];
-		return;
-	} 
-	assert(0);
+		RNG_FILE = argv[6];
+		N_PHASE = n_execution_variables / 2;
+		Q_EXECUTION = malloc(sizeof(double)*N_PHASE);
+		X_EXECUTION = malloc(sizeof(double)*N_PHASE);
+		for(int i = 0; i < N_PHASE; i++)
+			Q_EXECUTION[i] = 
+				strtod(argv[i + argc]i, NULL);
+		for(int i = 0; i < N_PHASE; i++)
+			X_EXECUTION[i] = 
+				strtod(argv[i + argc + N_PHASE], NULL);
+	} else { 
+		assert(0);
+	}
 }
 
 void printf_orbit(unsigned int n) {
@@ -220,9 +228,6 @@ void printf_variables(){
 	printf("%d\n", N_DEVICE);
 	printf("%g\n", X_FLOW); 
 	printf("%g\n", X_ORBIT); 
-	printf("%g\n", Q_Q); 
-	printf("%g\n", X_PHASE_1); 
-	printf("%g\n", X_PHASE_2); 
 	printf("%g\n", Q_R0); 
 	printf("%g\n", Q_R1);
 }
