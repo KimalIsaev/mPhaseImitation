@@ -35,14 +35,15 @@ struct indexed_time{
 	double time;
 	struct avl_tree_node node;
 };
-#define INDEXED_TIME(__node) avl_tree_entry(__node, struct indexed_time, node) 
-#define TIME_VALUE(node) INDEXED_TIME(node)->time
+#define avl_tree_node_to_indexed_time(__node) \
+	avl_tree_entry(__node, struct indexed_time, node) 
+#define avl_tree_node_to_time(node) avl_tree_node_to_indexed_time(node)->time
 
 static struct avl_tree_node *tree = NULL;
 
 int cmp_func(const struct avl_tree_node *node1, 
 		const struct avl_tree_node *node2){
-	return (TIME_VALUE(node1) > TIME_VALUE(node2)) ? 1: -1;
+	return (avl_tree_node_to_time(node1) > avl_tree_node_to_time(node2))?1:-1;
 }
 
 void wait_new(char index, double time){
@@ -97,7 +98,7 @@ void free_avl_tree(struct avl_tree_node** tree){
 		avl_tree_first_in_order(*tree);
 
 	while(current) {
-		to_delete = INDEXED_TIME(current);
+		to_delete = avl_tree_node_to_indexed_time(current);
 		current = avl_tree_next_in_order(current);
 		avl_tree_remove(tree, &to_delete->node);
 		free(to_delete);
@@ -116,7 +117,7 @@ void clean_up(){
 void decrease_time_from(struct avl_tree_node* current, double min){
 	struct indexed_time* to_decrease_time;
 	while(current){
-		to_decrease_time = INDEXED_TIME(current);
+		to_decrease_time = avl_tree_node_to_indexed_time(current);
 		to_decrease_time->time -= min;
 		current = avl_tree_next_in_order(current);
 	}
@@ -125,7 +126,7 @@ void decrease_time_from(struct avl_tree_node* current, double min){
 void min_change(char* index_of_deleted, double* min){
 	struct avl_tree_node* current = 
 		avl_tree_first_in_order(tree);
- 	struct indexed_time* to_delete = INDEXED_TIME(current); 
+ 	struct indexed_time* to_delete = avl_tree_node_to_indexed_time(current); 
 	*min = to_delete->time; //set returned values
 	*index_of_deleted = to_delete->index; //set returned values
 	decrease_time_from(avl_tree_next_in_order(current), *min); 
@@ -217,7 +218,7 @@ void printf_tree() {
 	struct avl_tree_node* current = avl_tree_first_in_order(tree);
 	
     while(current) {
-        node = INDEXED_TIME(current);
+        node = avl_tree_node_to_indexed_time(current);
         printf("%d:%g ", node->index, node->time);
         current = avl_tree_next_in_order(current);
     }
