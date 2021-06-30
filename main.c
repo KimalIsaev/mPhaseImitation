@@ -12,13 +12,13 @@ const char I_DEVICE = 2;
 const char N_NON_EXECUTION_VARIABLES = 7;
 
 int N_PHASE;
-unsigned int N_DEVICE = 2;
-double X_FLOW = 0.8;
-double X_ORBIT = 0.2;
-double Q_R0 = 0.7;
-double Q_R1 = 0.2;
+unsigned int N_DEVICE;
+double X_FLOW;
+double X_ORBIT;
+double Q_R0;
+double Q_R1;
 double Q_R2;
-char* RNG_FILE = "big_test.txt";
+char* RNG_FILE;
 
 double* Q_EXECUTION = NULL;
 double* X_EXECUTION = NULL;
