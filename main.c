@@ -247,6 +247,7 @@ int main(int argc, char *argv[]){
 		
 		//printf_cvector(&orbit_times);
 	}
+	fprintf(stderr, "%d\n", count_flow_request);
 	printf_orbit(n_step);
 	//printf_variables();
 	return 0;
