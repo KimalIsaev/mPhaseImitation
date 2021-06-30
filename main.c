@@ -96,12 +96,12 @@ void free_avl_tree(struct avl_tree_node** tree){
 	struct avl_tree_node* current = 
 		avl_tree_first_in_order(*tree);
 
-    while(current) {
-        to_delete = INDEXED_TIME(current);
-        current = avl_tree_next_in_order(current);
-        avl_tree_remove(tree, &to_delete->node);
-        free(to_delete);
-    }
+	while(current) {
+		to_delete = INDEXED_TIME(current);
+		current = avl_tree_next_in_order(current);
+		avl_tree_remove(tree, &to_delete->node);
+		free(to_delete);
+	}
 	*tree = NULL;
 }
 
