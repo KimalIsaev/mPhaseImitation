@@ -23,7 +23,7 @@ char* RNG_FILE = "big_test.txt";
 double* Q_EXECUTION = NULL;
 double* X_EXECUTION = NULL;
 
-unsigned int m_step = 0;
+unsigned int count_flow_request = 0;
 int number_of_request_in_devices = 0;
 int number_of_request_in_orbit = 0;
 unsigned int k_step;
@@ -164,7 +164,7 @@ double step(){
 	min_change(&index_of_worked_stream, &time_of_step);
 	switch (index_of_worked_stream) {
 		case I_FLOW:
-			m_step++;
+			count_flow_request++;
 			wait_sampled_flow();
 			new_request_to_execute();
 			break;
