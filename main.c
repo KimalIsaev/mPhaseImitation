@@ -182,7 +182,7 @@ double step(){
 
 void set_variables(int argc, char *argv[]){
 	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
-	if ((n_execution_varianles > 0) && !(n_execution_variables % 2)){
+	if ((n_execution_variables > 0) && !(n_execution_variables % 2)){
 		N_DEVICE = strtoul(argv[1], NULL, 10); 
 		X_FLOW = strtod(argv[2], NULL); 
 		X_ORBIT = strtod(argv[3], NULL); 
@@ -195,7 +195,7 @@ void set_variables(int argc, char *argv[]){
 		X_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		for(int i = 0; i < N_PHASE; i++)
 			Q_EXECUTION[i] = 
-				strtod(argv[i + argc]i, NULL);
+				strtod(argv[i + argc], NULL);
 		for(int i = 0; i < N_PHASE; i++)
 			X_EXECUTION[i] = 
 				strtod(argv[i + argc + N_PHASE], NULL);

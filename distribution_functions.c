@@ -17,8 +17,8 @@ double hyperexp_dist(double a, double p, unsigned int n,
 void get_consecative_sums(double* original, unsigned int n, double* sums){
 	double s = 0;
 	for(unsigned int i = 0; i < n; i++){
-		S += original[i];
-		sums[i] = S;
+		s += original[i];
+		sums[i] = s;
 	}	
 }
 
