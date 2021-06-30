@@ -30,7 +30,8 @@ static double random_ull_to_random_double(unsigned long long ull)
 	return transition.rational - 1;
 }
 
-unsigned int file_to_array(char* filename, struct double_pair** array){
+unsigned int filename_to_double_pair_array(char* filename,
+		struct double_pair** array){
 	FILE *fp;
 	fp = fopen(filename, "r");
 	if (fp == NULL) return 0;

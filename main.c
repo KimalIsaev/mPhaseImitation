@@ -235,7 +235,7 @@ void printf_variables(){
 
 int main(int argc, char *argv[]){
 	set_variables(argc, argv);
-	unsigned int n_step = file_to_array(RNG_FILE, &double_pairs);
+	unsigned int n_step = filename_to_double_pair_array(RNG_FILE, &double_pairs);
 	set_up(n_step);
 	int old_number_requst_in_orbit;
 	//for(k_step = 1; k_step < M_STEP; k_step++) step();

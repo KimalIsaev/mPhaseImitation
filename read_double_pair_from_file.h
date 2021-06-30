@@ -7,5 +7,6 @@ struct double_pair{
 	double second;
 };
 
-unsigned int file_to_array(char* filename, struct double_pair** array);
+unsigned int filename_to_double_pair_array(char* filename,
+		struct double_pair** array);
 
