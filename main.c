@@ -183,22 +183,25 @@ double step(){
 void set_variables(int argc, char *argv[]){
 	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
 	if ((n_execution_variables > 0) && !(n_execution_variables % 2)){
-		N_DEVICE = strtoul(argv[1], NULL, 10); 
-		X_FLOW = strtod(argv[2], NULL); 
-		X_ORBIT = strtod(argv[3], NULL); 
-		Q_R0 = strtod(argv[4], NULL); 
-		Q_R1 = strtod(argv[5], NULL); 
+		sscanf(argv[1], "%d", &N_DEVICE); 
+		sscanf(argv[2], "%lf", &X_FLOW); 
+		sscanf(argv[3], "%lf", &X_ORBIT); 
+		sscanf(argv[4], "%lf", &Q_R0); 
+		sscanf(argv[5], "%lf", &Q_R1); 
 		Q_R2 = 1 - Q_R0 - Q_R1;
 		RNG_FILE = argv[6];
 		N_PHASE = n_execution_variables / 2;
 		Q_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		X_EXECUTION = malloc(sizeof(double)*N_PHASE);
-		for(int i = 0; i < N_PHASE; i++)
-			Q_EXECUTION[i] = 
-				strtod(argv[i + argc], NULL);
-		for(int i = 0; i < N_PHASE; i++)
-			X_EXECUTION[i] = 
-				strtod(argv[i + argc + N_PHASE], NULL);
+		int cur_arg;
+		for(int i = 0; i < N_PHASE; i++){
+			cur_arg = N_NON_EXECUTION_VARIABLES + i;
+			sscanf(argv[cur_arg], "%lf", &Q_EXECUTION[i]);
+		} 
+		for(int i = 0; i < N_PHASE; i++){
+			cur_arg = N_NON_EXECUTION_VARIABLES + N_PHASE + i;
+			sscanf(argv[cur_arg], "%lf", &X_EXECUTION[i]);
+		}
 	} else { 
 		assert(0);
 	}
