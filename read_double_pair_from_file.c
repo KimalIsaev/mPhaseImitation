@@ -37,8 +37,7 @@ unsigned int filename_to_double_pair_array(char* filename,
 	if (fp == NULL) return 0;
 	unsigned int file_size = fsize(fp);
 	//printf("%d\n", file_size);
-	unsigned int number_of_double_pairs = (file_size - 1) 
-		/ FOURTEEN_BYTE_SIZE; //last symbol is end symbol 
+	unsigned int number_of_double_pairs = file_size / FOURTEEN_BYTE_SIZE; 
 	*array = malloc(sizeof(struct double_pair)*number_of_double_pairs);
 	unsigned long long buffer = 0;
 	for(unsigned int i = 0; i < number_of_double_pairs; i++){
