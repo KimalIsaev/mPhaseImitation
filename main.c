@@ -236,6 +236,16 @@ void printf_variables(){
 	printf("%g\n", Q_R1);
 }
 
+unsigned int first_non_zero_from_end(double* a, unsigned int max){
+	if (max!=0){
+		unsigned int i;
+		for(i = max - 1; (i!=0) && (a[i]==0); i--); 
+		return i + 1;
+	} else {
+		return 0;
+	}
+}
+
 int main(int argc, char *argv[]){
 	set_variables(argc, argv);
 	unsigned int n_step = filename_to_double_pair_array(RNG_FILE, &double_pairs);
@@ -247,11 +257,9 @@ int main(int argc, char *argv[]){
 		orbit_times[old_number_request_in_orbit] += step();
 		//printf("%d\n", k_step);
 		//printf_tree();
-		
-		//printf_cvector(&orbit_times);
 	}
 	fprintf(stderr, "%d\n", count_flow_request);
-	printf_orbit(n_step);
+	printf_orbit(first_non_zero_from_end(orbit_times, n_step));
 	//printf_variables();
 	return 0;
 }
