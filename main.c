@@ -183,12 +183,12 @@ double step(){
 void set_variables(int argc, char *argv[]){
 	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
 	if ((n_execution_variables > 0) && !(n_execution_variables % 2)){
-		RNG_FILE = argv[6];
-		sscanf(argv[1], "%d", &N_DEVICE); 
-		sscanf(argv[2], "%lf", &X_FLOW); 
-		sscanf(argv[3], "%lf", &X_ORBIT); 
-		sscanf(argv[4], "%lf", &Q_R0); 
-		sscanf(argv[5], "%lf", &Q_R1); 
+		RNG_FILE = argv[1];
+		sscanf(argv[2], "%d", &N_DEVICE); 
+		sscanf(argv[3], "%lf", &X_FLOW); 
+		sscanf(argv[4], "%lf", &X_ORBIT); 
+		sscanf(argv[5], "%lf", &Q_R0); 
+		sscanf(argv[6], "%lf", &Q_R1); 
 		Q_R2 = 1 - Q_R0 - Q_R1;
 		N_PHASE = n_execution_variables / 2;
 		Q_EXECUTION = malloc(sizeof(double)*N_PHASE);
