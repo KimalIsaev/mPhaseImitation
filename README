@@ -1,0 +1,30 @@
+command for compilation:
+	clang -O3 -lm avl_tree.c distribution_functions.c read_double_pair_from_file.c \ 
+		main.c -o mPhaseImitation.exe
+usage:
+	./mPhaseImiation.exe path_to_rng_file.raw N_device X_flow X_orbit Q_R0 Q_R1 
+		Q_phase1 Q_phase2 .. Q_phaseM X_phase1 X_phase2 .. X_phaseM
+	path_to_rng_file.raw: path to file with random generated 14-byte numbers
+		number of steps will be done by program is file_size / 14 
+        N_devices: amount of devices in system
+        X_flow: intensity of puasson flow. which generating input request
+        X_orbit: intensity of one request in orbit
+        Q_R0: probability to exit system after device executed request
+        Q_R0: probability to be executed again
+                after device executed request already
+        Q_R2 = 1-(Q_R1+Q_R2):  probability to orbit
+                after device executed request
+        Q_phases: multiple non-negative values,
+                sum of which must be equal to one,
+                defines probability to use phase with same index
+        X_phases: multiple positive values
+                (same number of values as Q-phases had),
+                defines intensity of phase with same index
+
+practical usage:
+	i use this scripts:
+		https://github.com/KimalIsaev/mPhaseImitationScripts
+
+I have used this implemintation of avl_tree:
+	https://github.com/ebiggers/avl_tree
+
