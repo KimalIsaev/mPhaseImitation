@@ -1,9 +1,10 @@
 command for compilation:
-	clang -O3 -lm avl_tree.c distribution_functions.c read_double_pair_from_file.c \ 
-		main.c -o mPhaseImitation.exe
+	clang -O3 -lm avl_tree.c distribution_functions.c  \
+		read_double_pair_from_file.c main.c -o mPhaseImitation.exe
 usage:
-	./mPhaseImiation.exe path_to_rng_file.raw N_device X_flow X_orbit Q_R0 Q_R1 
-		Q_phase1 Q_phase2 .. Q_phaseM X_phase1 X_phase2 .. X_phaseM
+	./mPhaseImiation.exe path_to_rng_file.raw N_device X_flow X_orbit \ 
+		Q_R0 Q_R1 Q_phase1 Q_phase2 .. Q_phaseM \
+		X_phase1 X_phase2 .. X_phaseM
 	path_to_rng_file.raw: path to file with random generated 14-byte numbers
 		number of steps will be done by program is file_size / 14 
         N_devices: amount of devices in system
@@ -26,5 +27,44 @@ practical usage:
 		https://github.com/KimalIsaev/mPhaseImitationScripts
 
 I have used this implemintation of avl_tree:
+	https://github.com/ebiggers/avl_tree
+
+-----------------------------------------------------------------------------
+
+команда для компиляции:
+	clang -O3 -lm avl_tree.c distribution_functions.c  \
+		read_double_pair_from_file.c main.c -o mPhaseImitation.exe
+использование:
+	./mPhaseImiation.exe path_to_rng_file.raw N_device X_flow X_orbit \ 
+		Q_R0 Q_R1 Q_phase1 Q_phase2 .. Q_phaseM \
+		X_phase1 X_phase2 .. X_phaseM
+	path_to_rng_file.raw: путь к файлу с случайными 14-байтовыми числами
+		количество шагов сделанных программой будет равно:
+			 размер_файла / 14 
+        N_devices: количество приборов
+        X_flow: интенсивность потока генерирующего заявки
+        X_orbit: интенсивность одной заявки на орбите
+        Q_R0: вероятность покинуть систему после того как
+                закончено обслуживание
+        Q_R0: вероятность снова пойти на обслуживание
+                после того как заявка была выполнена
+        Q_R2 = 1-(Q_R1+Q_R2): вероятность перейти на орбиту
+                после того как заявка была выполнена
+        Q_phases: несколько неотрицательных значений,
+                сумма которых должна равняться единице,
+                определяет вероятность с которой заявка
+                будет исполняться на этой фазе
+                (первый элемент в Q_phases определят
+                 вероятность исполнения на первой фазе,
+                 второй на второй и т. д.)
+        X_phases: несколько положительных значений,
+                столько же сколько и у Q_phases,
+                определяет интенсивность фазы
+
+практичное использование:
+	я использую данные скрипты:
+		https://github.com/KimalIsaev/mPhaseImitationScripts
+
+я использовал данную имплементацию avl_tree:
 	https://github.com/ebiggers/avl_tree
 
