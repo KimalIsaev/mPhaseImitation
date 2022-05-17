@@ -194,10 +194,13 @@ void set_variables(int argc, char *argv[]){
 		Q_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		X_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		int cur_arg;
-		for(int i = 0; i < N_PHASE; i++){
+		double Q_sum = 0;
+		for(int i = 0; i < N_PHASE - 1; i++){
 			cur_arg = N_NON_EXECUTION_VARIABLES + i;
 			sscanf(argv[cur_arg], "%lf", &Q_EXECUTION[i]);
-		} 
+			Q_sum += Q_EXECUTION[i];
+		}
+		Q_EXECUTION[N_PHASE - 1] = 1 - Q_sum;
 		for(int i = 0; i < N_PHASE; i++){
 			cur_arg = N_NON_EXECUTION_VARIABLES + N_PHASE + i;
 			sscanf(argv[cur_arg], "%lf", &X_EXECUTION[i]);
