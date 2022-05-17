@@ -190,7 +190,7 @@ void set_variables(int argc, char *argv[]){
 		sscanf(argv[5], "%lf", &Q_R0); 
 		sscanf(argv[6], "%lf", &Q_R1); 
 		Q_R2 = 1 - Q_R0 - Q_R1;
-		N_PHASE = n_execution_variables / 2;
+		N_PHASE = (n_execution_variables + 1) / 2;
 		Q_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		X_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		int cur_arg;
