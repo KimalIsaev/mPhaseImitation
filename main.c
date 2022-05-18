@@ -210,6 +210,12 @@ void set_variables(int argc, char *argv[]){
 	}
 }
 
+void printf_normalized_orbit(unsigned int n) {
+    double S = 0;
+    for(int i = 0; i < n; S+=orbit_times[i++]);
+	for(int i = 0; i < n; printf("%g\n", orbit_times[i++]/S));
+}
+
 void printf_orbit(unsigned int n) {
 	for(int i = 0; i < n; printf("%g\n", orbit_times[i++]));
 }
@@ -262,7 +268,8 @@ int main(int argc, char *argv[]){
 		//printf_tree();
 	}
 	fprintf(stderr, "%d\n", count_flow_request);
-	printf_orbit(first_non_zero_from_end(orbit_times, n_step));
+	printf_normalized_orbit(first_non_zero_from_end(orbit_times, n_step));
+	//printf_orbit(first_non_zero_from_end(orbit_times, n_step));
 	//printf_variables();
 	return 0;
 }
