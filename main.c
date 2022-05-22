@@ -184,12 +184,12 @@ void set_variables(int argc, char *argv[]){
 	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
 	if ((n_execution_variables > 0) && (n_execution_variables % 2)){
 		RNG_FILE = argv[1];
-		N_DEVICE = strtoul(argv[2], NULL, 10);
-		X_FLOW = strtod(argv[3], NULL);
-		X_ORBIT = strtod(argv[4], NULL);
-		Q_R1 = strtod(argv[5], NULL);
+		X_ORBIT = strtod(argv[2], NULL);
+		N_DEVICE = strtoul(argv[3], NULL, 10);
+		X_FLOW = strtod(argv[4], NULL);
+		Q_R0 = strtod(argv[5], NULL);
 		Q_R2 = strtod(argv[6], NULL);
-		Q_R0 = 1 - Q_R1 - Q_R2;
+		Q_R1 = 1 - Q_R0 - Q_R2;
 		N_PHASE = (n_execution_variables + 1) / 2;
 		Q_EXECUTION = malloc(sizeof(double)*N_PHASE);
 		X_EXECUTION = malloc(sizeof(double)*N_PHASE);
