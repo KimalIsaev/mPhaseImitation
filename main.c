@@ -182,7 +182,7 @@ double step(){
 
 void set_variables(int argc, char *argv[]){
 	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
-	if ((n_execution_variables > 0) && (n_execution_variables % 2)){
+	if ((n_execution_variables > 0) && !(n_execution_variables % 2)){
 		RNG_FILE = argv[1];
 		X_ORBIT = strtod(argv[2], NULL);
 		N_DEVICE = strtoul(argv[3], NULL, 10);
