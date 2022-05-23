@@ -9,7 +9,7 @@
 const char I_FLOW = 0;
 const char I_ORBIT = 1;
 const char I_DEVICE = 2;
-const char N_NON_EXECUTION_VARIABLES = 7;
+const char N_NON_EXECUTION_VARIABLES = 6;
 
 int N_PHASE;
 unsigned int N_DEVICE;
