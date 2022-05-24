@@ -244,12 +244,12 @@ void printf_variables(){
 	
 	printf("qs: ");
 	for(int i = 0; i < N_PHASE; i++){
- 		printf("%g ", Q_EXECUITON[i]);
+ 		printf("%g ", Q_EXECUTION[i]);
 	}
 	printf("\n");
 	printf("us: ");
 	for(int i = 0; i < N_PHASE; i++){
- 		printf("%g ", X_EXECUITON[i]);
+ 		printf("%g ", X_EXECUTION[i]);
 	}
 	printf("\n");
 }
