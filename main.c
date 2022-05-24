@@ -9,7 +9,7 @@
 const char I_FLOW = 0;
 const char I_ORBIT = 1;
 const char I_DEVICE = 2;
-const char N_NON_EXECUTION_VARIABLES = 6;
+const char N_NON_EXECUTION_VARIABLES = 7;
 
 int N_PHASE;
 unsigned int N_DEVICE;
@@ -182,7 +182,7 @@ double step(){
 
 void set_variables(int argc, char *argv[]){
 	int n_execution_variables = argc - N_NON_EXECUTION_VARIABLES;
-	if ((n_execution_variables > 0) && !(n_execution_variables % 2)){
+	if ((n_execution_variables > 0) && (n_execution_variables % 2)){
 		RNG_FILE = argv[1];
 		X_ORBIT = strtod(argv[2], NULL);
 		N_DEVICE = strtoul(argv[3], NULL, 10);
@@ -238,11 +238,20 @@ void printf_tree() {
 }
 
 void printf_variables(){
-	printf("%d\n", N_DEVICE);
-	printf("%g\n", X_FLOW); 
-	printf("%g\n", X_ORBIT); 
-	printf("%g\n", Q_R0); 
-	printf("%g\n", Q_R1);
+	printf("mn: %d %d\n", N_PHASE, N_DEVICE);
+	printf("ls: %g %g\n", X_FLOW, X_ORBIT); 
+	printf("rs: %g %g %g\n", Q_R0, Q_R1, Q_R2);
+	
+	printf("qs: ");
+	for(int i = 0; i < N_PHASE; i++){
+ 		printf("%g ", Q_EXECUITON[i]);
+	}
+	printf("\n");
+	printf("us: ");
+	for(int i = 0; i < N_PHASE; i++){
+ 		printf("%g ", X_EXECUITON[i]);
+	}
+	printf("\n");
 }
 
 unsigned int first_non_zero_from_end(double* a, unsigned int max){
