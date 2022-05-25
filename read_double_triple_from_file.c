@@ -1,4 +1,4 @@
-#include "read_double_pair_from_file.h"
+#include "read_double_triple_from_file.h"
 /*
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,7 +8,6 @@ void printf_ull(unsigned long long ull){
 }
 */
 const char SEVEN_BYTE_SIZE = 7;
-const char FOURTEEN_BYTE_SIZE = 14;
 
 unsigned int fsize(FILE *fp){
 	unsigned int prev = ftell(fp);
@@ -31,31 +30,34 @@ static double random_ull_to_random_double(unsigned long long ull)
 }
 
 unsigned int filename_to_double_pair_array(char* filename,
-		struct double_pair** array){
+		struct double_triple** array){
 	FILE *fp;
 	fp = fopen(filename, "r");
 	if (fp == NULL) return 0;
 	unsigned int file_size = fsize(fp);
 	//printf("%d\n", file_size);
-	unsigned int number_of_double_pairs = file_size / FOURTEEN_BYTE_SIZE; 
-	*array = malloc(sizeof(struct double_pair)*number_of_double_pairs);
+	unsigned int number_of_double_triples = file_size / (3*SEVEN_BYTE_SIZE); 
+	*array = malloc(sizeof(struct double_triple)*number_of_double_triples);
 	unsigned long long buffer = 0;
-	for(unsigned int i = 0; i < number_of_double_pairs; i++){
+	for(unsigned int i = 0; i < number_of_double_triples; i++){
 		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
 		//printf_ull(buffer);
 		(*array)[i].first = random_ull_to_random_double(buffer);
 		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
 		//printf_ull(buffer);
 		(*array)[i].second = random_ull_to_random_double(buffer);
+		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
+		//printf_ull(buffer);
+		(*array)[i].third = random_ull_to_random_double(buffer);
 	}   
 	
 	fclose(fp);
-	return number_of_double_pairs;
+	return number_of_double_triples;
 }
 /*
 int main(){
 	char filename[] = "test.txt";
-	struct double_pair* double_pairs;
+	struct double_triple* double_pairs;
 	file_to_array(filename, &double_pairs);
 	return 0;
 }
