@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "avl_tree.h"
 #include "distribution_functions.h"
-#include "read_double_triple_from_file.h"
+#include "read_double_quintet_from_file.h"
 //indexes for recognition in avl tree
 const char I_FLOW = 0;
 const char I_ORBIT = 1;
@@ -28,7 +28,7 @@ int number_of_request_in_devices = 0;
 int number_of_request_in_orbit = 0;
 unsigned int k_step;
 double* orbit_times;
-struct double_triple* double_triples; //definition in read_double_pair_from_file
+struct double_quintet* double_quintets; //definition in read_double_pair_from_file
 
 struct indexed_time{
 	unsigned char index;
@@ -69,20 +69,20 @@ void wait_new_from_device(double a, double q){
 }
 
 void wait_sampled_flow(){
-	wait_new_from_flow(double_triples[k_step].third);
+	wait_new_from_flow(double_quintets[k_step].flow);
 }
 
 void wait_sampled_orbit(){
-	wait_new_from_orbit(double_triples[k_step].first);
+	wait_new_from_orbit(double_quintets[k_step].orbit);
 }
 
 void wait_sampled_device(){
-	wait_new_from_device(double_triples[k_step].first,
-			double_triples[k_step].second);
+	wait_new_from_device(double_quintets[k_step].execution,
+			double_quintets[k_step].phase);
 }
 
 void add_first_from_flow(){
-	wait_new_from_flow(double_triples[0].third); 
+	wait_new_from_flow(double_quintets[0].flow); 
 }
 
 void set_up(unsigned int n){
@@ -109,7 +109,7 @@ void free_avl_tree(struct avl_tree_node** tree){
 void clean_up(){
 	free_avl_tree(&tree);
 	free(orbit_times);
-	free(double_triples);
+	free(double_quintets);
 	free(X_EXECUTION);
 	free(Q_EXECUTION);
 }
@@ -153,7 +153,7 @@ void new_request_to_execute(){
 	}
 }
 void new_request_executed(){
-	double uni = double_triples[k_step].first; 
+	double uni = double_quintets[k_step].after_execution; 
 	if (uni < Q_R2) new_request_in_orbit();
 	if (uni > (1 - Q_R1)) new_request_in_devices();
 }
@@ -266,7 +266,8 @@ unsigned int first_non_zero_from_end(double* a, unsigned int max){
 
 int main(int argc, char *argv[]){
 	set_variables(argc, argv);
-	unsigned int n_step = filename_to_double_pair_array(RNG_FILE, &double_triples);
+	unsigned int n_step = filename_to_double_quintet_array(
+		RNG_FILE, &double_quintets);
 	set_up(n_step);
 	int old_number_request_in_orbit;
 	//for(k_step = 1; k_step < M_STEP; k_step++) step();

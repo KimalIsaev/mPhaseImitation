@@ -1,4 +1,4 @@
-#include "read_double_triple_from_file.h"
+#include "read_double_quintet_from_file.h"
 /*
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,35 +29,41 @@ static double random_ull_to_random_double(unsigned long long ull)
 	return transition.rational - 1;
 }
 
-unsigned int filename_to_double_pair_array(char* filename,
-		struct double_triple** array){
+unsigned int filename_to_double_quintet_array(char* filename,
+		struct double_quintet** array){
 	FILE *fp;
 	fp = fopen(filename, "r");
 	if (fp == NULL) return 0;
 	unsigned int file_size = fsize(fp);
 	//printf("%d\n", file_size);
-	unsigned int number_of_double_triples = file_size / (3*SEVEN_BYTE_SIZE); 
-	*array = malloc(sizeof(struct double_triple)*number_of_double_triples);
+	unsigned int number_of_double_quintets = file_size / (5*SEVEN_BYTE_SIZE); 
+	*array = malloc(sizeof(struct double_quintet)*number_of_double_quintets);
 	unsigned long long buffer = 0;
-	for(unsigned int i = 0; i < number_of_double_triples; i++){
+	for(unsigned int i = 0; i < number_of_double_quintets; i++){
 		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
 		//printf_ull(buffer);
-		(*array)[i].first = random_ull_to_random_double(buffer);
+		(*array)[i].flow = random_ull_to_random_double(buffer);
 		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
 		//printf_ull(buffer);
-		(*array)[i].second = random_ull_to_random_double(buffer);
+		(*array)[i].orbit = random_ull_to_random_double(buffer);
 		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
 		//printf_ull(buffer);
-		(*array)[i].third = random_ull_to_random_double(buffer);
+		(*array)[i].execution = random_ull_to_random_double(buffer);
+		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
+		//printf_ull(buffer);
+		(*array)[i].phase = random_ull_to_random_double(buffer);
+		fread(&buffer, SEVEN_BYTE_SIZE, 1, fp);
+		//printf_ull(buffer);
+		(*array)[i].after_execution = random_ull_to_random_double(buffer);
 	}   
 	
 	fclose(fp);
-	return number_of_double_triples;
+	return number_of_double_quintets;
 }
 /*
 int main(){
 	char filename[] = "test.txt";
-	struct double_triple* double_pairs;
+	struct double_quintet* double_pairs;
 	file_to_array(filename, &double_pairs);
 	return 0;
 }
